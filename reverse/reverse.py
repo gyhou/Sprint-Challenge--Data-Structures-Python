@@ -49,7 +49,7 @@ class LinkedList:
 
     def reverse_list(self):
         # TODO: TO BE COMPLETED
-        if self:
+        if self.head is None:
             return
 
         prev = None
