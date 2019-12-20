@@ -23,19 +23,6 @@ class RingBuffer:
             self.current = 0
 
         self.storage.add_to_tail(item)
-        # if self.storage.length == self.capacity:
-        #     self.storage.remove_from_head()
-        #     self.storage.add_to_head(item)
-        #     self.current += 1
-        #     loc = self.current % self.capacity
-        #     for _ in range(loc):
-        #         if loc == i+1:
-
-        #             for h in range(i):
-        #                 self.storage.head = self.storage.head.next
-        # else:
-        #     self.current = 0
-        #     self.storage.add_to_tail(item)
 
     def get(self):
         """
@@ -74,10 +61,32 @@ class RingBuffer:
 
 class ArrayRingBuffer:
     def __init__(self, capacity):
-        pass
+        self.capacity = capacity
+        self.storage = [0]*capacity
+        self.counter = 0
 
     def append(self, item):
-        pass
+        self.storage.append(item)
+        if len(self.storage) > self.capacity:
+            self.counter += 1
+            self.storage = self.storage[1:]
 
     def get(self):
-        pass
+        if self.storage is None:
+            return
+
+        list_buffer = []
+
+        if self.counter > 0:
+            loc = self.counter % self.capacity
+            for i in range(-loc, 0):
+                list_buffer.append(self.storage[i])
+
+        n = 0
+        while len(list_buffer) != self.capacity:
+            list_buffer.append(self.storage[n])
+            n += 1
+        if self.counter < 5:
+            return list_buffer[:self.counter]
+        else:
+            return list_buffer
